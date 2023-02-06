@@ -3,4 +3,4 @@ Paul,AAA,MALE,HIGH,HIGH,bla bla,Ringo,,,,John
 John,AAA,MALE,HIGH,HIGH,bla bla,Ringo,,,,
 Ringo,AAA,MALE,LOW,HIGH,bla bla,Paul,John,George,,
 George,AAA,MALE,HIGH,MEDIUM,bla bla,Paul,John,,,
-Yoko,BBB,FEMALE,LOW,LOW,witch,,,,,Paul
+Yoko,AAA,FEMALE,LOW,LOW,witch,,,,,Paul
