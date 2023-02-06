@@ -1,89 +1,67 @@
 package com.nirlevy.classrooms.parsers
 
-import com.nirlevy.classrooms.data.Gender
-import com.nirlevy.classrooms.data.Grade
+import com.fasterxml.jackson.dataformat.csv.CsvMapper
+import com.fasterxml.jackson.dataformat.csv.CsvSchema
+import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.nirlevy.classrooms.StudentCsvEntity
 import com.nirlevy.classrooms.data.Student
-import org.apache.commons.csv.CSVFormat
-import org.apache.commons.csv.CSVParser
 import java.io.FileReader
-import java.util.*
-import java.util.stream.Collectors
 
 class StudentCsvParser {
 
+    private val csvMapper = CsvMapper().apply {
+        registerModule(KotlinModule.Builder().build())
+    }
+
     fun parseStudents(filename: String) : List<Student> {
-
-        val reader = FileReader(filename)
-        val parser = CSVParser(reader, CSVFormat.Builder.create().setSkipHeaderRecord(true).setHeader().build())
-
-        var i = 1
-        val studentEntities = parser.records.map { record ->
-            StudentEntity(
-                id = i++,
-                gender = parseGender(record.get("gender")),
-                academicPerformance = parseGrade(record.get("academicPerformance")),
-                behavioralPerformance = parseGrade(record.get("behavioralPerformance")),
-                studentIdentifier = StudentIdentifier(
-                    name = record.get("name"),
-                    school = record.get("school")
-                ),
-                comments = record.get("comments"),
-                friends = listOf(
-                    record.get("friend1"),
-                    record.get("friend2"),
-                    record.get("friend3"),
-                    record.get("friend4"),
-                ),
-                notWith = record.get("notWith")
-            )
+        FileReader(filename).use { reader ->
+            val studentCsvEntities = csvMapper
+                .readerFor(StudentCsvEntity::class.java)
+                .with(CsvSchema.emptySchema().withHeader())
+                .readValues<StudentCsvEntity>(reader)
+                .readAll()
+                .toList()
+            return toStudentsList(studentCsvEntities)
         }
+    }
 
-        val studentIdentifiersToIds = studentEntities.stream().collect(Collectors.toMap(StudentEntity::studentIdentifier, StudentEntity::id))
+    private fun toStudentsList(studentCsvEntities: List<StudentCsvEntity>): List<Student> {
+        var i = 1
+        studentCsvEntities.forEach { it.id = i++ }
+        val studentIdentifiersToIds = studentCsvEntities.associateBy({StudentIdentifier(it.name, it.school)}, StudentCsvEntity::id)
 
-        val toList = studentEntities.map {
+        return studentCsvEntities.map {
             Student(
                 id = it.id,
                 gender = it.gender,
                 academicPerformance = it.academicPerformance,
                 behavioralPerformance = it.behavioralPerformance,
-                name = it.studentIdentifier.name,
-                school = it.studentIdentifier.school,
+                name = it.name,
+                school = it.school,
                 comments = it.comments,
                 preferredFriends = friendsToIds(it, studentIdentifiersToIds),
                 cantBeWith = toId(it, studentIdentifiersToIds)
             )
-        }.toList()
-        return toList
-    }
-
-    private fun toId(it: StudentEntity,
-                     studentIdentifiersToIds: MutableMap<StudentIdentifier, Int>): List<Int> {
-        return if (it.notWith.isNullOrEmpty()) {
-            emptyList()
-        } else {
-            listOf(studentIdentifiersToIds.getOrDefault(StudentIdentifier(it.notWith, it.studentIdentifier.school),0))
         }
     }
 
-    private fun friendsToIds(
-        it: StudentEntity,
-        studentIdentifiersToIds: MutableMap<StudentIdentifier, Int>
-    ) = it.friends.filter { name -> studentIdentifiersToIds.contains(StudentIdentifier(name, it.studentIdentifier.school))  }
-        .map { name -> studentIdentifiersToIds[StudentIdentifier(name, it.studentIdentifier.school)]!! }.toList()
+    private fun toId(it: StudentCsvEntity,
+                     studentIdentifiersToIds: Map<StudentIdentifier, Int>): List<Int> {
+        return if (it.notWith.isEmpty()) {
+            emptyList()
+        } else {
+            listOf(studentIdentifiersToIds.getOrDefault(StudentIdentifier(it.notWith, it.school),0))
+        }
+    }
 
-    private fun parseGrade(value: String) = Grade.valueOf(value.uppercase(Locale.getDefault()))
-    private fun parseGender(value: String) = Gender.valueOf(value.uppercase(Locale.getDefault()))
-
-    private data class StudentEntity(
-        val id: Int,
-        val gender: Gender,
-        val academicPerformance: Grade,
-        val behavioralPerformance: Grade,
-        val studentIdentifier: StudentIdentifier,
-        val comments: String?,
-        val friends: List<String>,
-        val notWith: String?
-    )
+    private fun friendsToIds(it: StudentCsvEntity, studentIdentifiersToIds: Map<StudentIdentifier, Int>): List<Int> {
+        return listOfNotNull(
+            studentIdentifiersToIds[StudentIdentifier(it.friend1, it.school)],
+            studentIdentifiersToIds[StudentIdentifier(it.friend2, it.school)],
+            studentIdentifiersToIds[StudentIdentifier(it.friend3, it.school)],
+            studentIdentifiersToIds[StudentIdentifier(it.friend4, it.school)]
+        )
+    }
 
     private data class StudentIdentifier(
         val name: String,

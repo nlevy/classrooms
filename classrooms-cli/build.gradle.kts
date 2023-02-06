@@ -8,7 +8,8 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("org.apache.commons:commons-csv:1.9.0")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.14.2")
     implementation(project(":classrooms-engine"))
     implementation(project(":genetic-algorithm"))
     testImplementation(kotlin("test"))
