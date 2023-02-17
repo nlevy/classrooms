@@ -11,4 +11,10 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    testImplementation(kotlin("test"))
+    testImplementation("io.mockk:mockk:1.13.4")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
