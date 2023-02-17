@@ -3,6 +3,11 @@ import com.nirlevy.classrooms.data.Grade
 import com.nirlevy.classrooms.data.Student
 import com.nirlevy.classrooms.evaluators.*
 import com.nirlevy.genetic.GeneticProgramSolver
+import com.nirlevy.genetic.GeneticSolver
+import com.nirlevy.genetic.services.ChromosomeEvaluator
+import com.nirlevy.genetic.services.ChromosomeGenerator
+import com.nirlevy.genetic.services.OffspringProducer
+import com.nirlevy.genetic.services.PopulationGenerator
 import java.lang.Integer.min
 import java.util.stream.Collectors
 import java.util.stream.IntStream
@@ -32,8 +37,24 @@ fun main() {
             SeparateFromEvaluator()
         ), populationSize =  10000
     )
-    val solution = solver.solve(students, 6)
-    printSolution(students, solution)
+//    val solution = solver.solve(students, 6)
+
+    val chromosomeEvaluator = ChromosomeEvaluator(
+        PreferredFriendsEvaluator(),
+        GenderBalanceEvaluator(),
+        SizeBalanceEvaluator(),
+        AcademicPerformanceEvaluator(),
+        BehavioralPerformanceEvaluator(),
+        SeparateFromEvaluator()
+    )
+    val offspringProducer = OffspringProducer(chromosomeEvaluator)
+    val chromosomeGenerator = ChromosomeGenerator(chromosomeEvaluator)
+    val populationGenerator = PopulationGenerator(chromosomeGenerator)
+    val gSolver = GeneticSolver(offspringProducer, populationGenerator)
+
+    val chromosome = gSolver.solve(10000, students, 6)
+    val createMap = createMap(chromosome.genes, students)
+    printSolution(students, createMap)
 }
 
 fun getRandomBlock(id: Int): List<Int> {
@@ -76,4 +97,12 @@ fun getFriendsCount(classroom: List<Student>) : List<Int> {
     return classroom.map {
         it.preferredFriends.intersect(classroom.map(Student::id).toSet()).size
     }
+}
+
+private fun <T> createMap(groups: List<Int>, genes: List<T>): Map<Int, List<T>> {
+    val map = HashMap<Int, MutableList<T>>()
+    for ((index, gene) in genes.withIndex()) {
+        map.computeIfAbsent(groups[index]) { ArrayList() }.add(gene)
+    }
+    return map
 }
