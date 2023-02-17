@@ -18,7 +18,7 @@ internal class ChromosomeEvaluatorTest {
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
-        chromosomeEvaluator = ChromosomeEvaluator(evaluator1, evaluator2)
+        chromosomeEvaluator = ChromosomeEvaluator(GroupsUtils(), evaluator1, evaluator2)
     }
 
     @Test

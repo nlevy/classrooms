@@ -4,10 +4,7 @@ import com.nirlevy.classrooms.data.Student
 import com.nirlevy.classrooms.evaluators.*
 import com.nirlevy.genetic.GeneticProgramSolver
 import com.nirlevy.genetic.GeneticSolver
-import com.nirlevy.genetic.services.ChromosomeEvaluator
-import com.nirlevy.genetic.services.ChromosomeGenerator
-import com.nirlevy.genetic.services.OffspringProducer
-import com.nirlevy.genetic.services.PopulationGenerator
+import com.nirlevy.genetic.services.*
 import java.lang.Integer.min
 import java.util.stream.Collectors
 import java.util.stream.IntStream
@@ -39,7 +36,9 @@ fun main() {
     )
 //    val solution = solver.solve(students, 6)
 
+    val groupsUtils = GroupsUtils()
     val chromosomeEvaluator = ChromosomeEvaluator(
+        groupsUtils,
         PreferredFriendsEvaluator(),
         GenderBalanceEvaluator(),
         SizeBalanceEvaluator(),
@@ -50,9 +49,9 @@ fun main() {
     val offspringProducer = OffspringProducer(chromosomeEvaluator)
     val chromosomeGenerator = ChromosomeGenerator(chromosomeEvaluator)
     val populationGenerator = PopulationGenerator(chromosomeGenerator)
-    val gSolver = GeneticSolver(offspringProducer, populationGenerator)
+    val gSolver = GeneticSolver(offspringProducer, populationGenerator, groupsUtils)
 
-    val chromosome = gSolver.solve(10000, students, 6)
+    val chromosome = gSolver.runSolver(students, 6)
     val createMap = createMap(chromosome.genes, students)
     printSolution(students, createMap)
 }

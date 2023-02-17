@@ -1,16 +1,23 @@
 package com.nirlevy.genetic
 
 import com.nirlevy.genetic.data.Chromosome
+import com.nirlevy.genetic.services.GroupsUtils
 import com.nirlevy.genetic.services.OffspringProducer
 import com.nirlevy.genetic.services.PopulationGenerator
 
 class GeneticSolver<T>(
     private val offspringProducer: OffspringProducer<T>,
     private val populationGenerator: PopulationGenerator<T>,
+    private val groupsUtils: GroupsUtils,
     private val fitnessThreshold: Double = 150.0,
-    private val numGenerations: Int = 5000) {
+    private val numGenerations: Int = 5000,
+    private val populationSize: Int = 10000) {
 
-    fun solve(populationSize: Int, genes: List<T>, numGroups: Int) : Chromosome {
+    fun solve(genes: List<T>, numGroups: Int): Map<Int, List<T>> {
+        return groupsUtils.createMap(runSolver(genes, numGroups).genes, genes)
+    }
+
+    fun runSolver(genes: List<T>, numGroups: Int) : Chromosome {
         var population = populationGenerator.generatePopulation(populationSize, genes, numGroups)
         var previousBest = 0.0
         var consecutiveEqualBest = 0
