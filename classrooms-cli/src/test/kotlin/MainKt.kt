@@ -1,5 +1,6 @@
 import com.nirlevy.classrooms.evaluators.*
 import com.nirlevy.classrooms.parsers.StudentCsvParser
+import com.nirlevy.classrooms.parsers.StudentsTransformer
 import com.nirlevy.genetic.GeneticSolver
 import com.nirlevy.genetic.services.*
 import java.nio.file.Paths
@@ -7,7 +8,7 @@ import java.nio.file.Paths
 
 fun main() {
 
-    val parser = StudentCsvParser()
+    val parser = StudentCsvParser(StudentsTransformer())
     val filename = Paths.get("classrooms-cli/src/test/resources/largeTestFile.csv").toAbsolutePath().toString()
     val students = parser.parseStudents(filename)
 
@@ -28,4 +29,6 @@ fun main() {
 
     val solution = solver.solve(students, 6)
     printSolution(students, solution)
+
+//    parser.writeToCsv("/tmp/testme.csv", solution)
 }

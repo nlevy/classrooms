@@ -12,7 +12,7 @@ internal class GenderBalanceEvaluatorTest {
     private val evaluator = GenderBalanceEvaluator()
 
     @Test
-    internal fun balancedClass() {
+    fun balancedClass() {
         val totalStudents = 10
         val students = buildStudentsList(totalStudents, true)
 
@@ -21,7 +21,7 @@ internal class GenderBalanceEvaluatorTest {
     }
 
     @Test
-    internal fun imbalancedClass() {
+    fun imbalancedClass() {
         val totalStudents = 10
         val students = buildStudentsList(totalStudents, false)
 
@@ -30,7 +30,7 @@ internal class GenderBalanceEvaluatorTest {
     }
 
     @Test
-    internal fun withFactor() {
+    fun withFactor() {
         val totalStudents = 10
         val students = buildStudentsList(totalStudents, true)
 

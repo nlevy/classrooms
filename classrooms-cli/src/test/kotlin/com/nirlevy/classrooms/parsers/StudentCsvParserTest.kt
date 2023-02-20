@@ -2,14 +2,18 @@ package com.nirlevy.classrooms.parsers
 
 import com.nirlevy.classrooms.data.Gender
 import com.nirlevy.classrooms.data.Grade
+import com.nirlevy.classrooms.data.Student
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileReader
 
 internal class StudentCsvParserTest {
+    private val reader = StudentCsvParser(StudentsTransformer())
 
     @Test
-    internal fun parseCsv() {
-        val reader = StudentCsvParser()
+    fun parseCsv() {
         val filename = javaClass.classLoader.getResource("testStudents.csv")?.toURI()?.path ?: fail("can't read file")
         val students = reader.parseStudents(filename)
         val byNameMap = students.associateBy { it.name }
@@ -69,4 +73,35 @@ internal class StudentCsvParserTest {
         assertTrue(yoko.cantBeWith.contains(paul.id))
         assertTrue(yoko.preferredFriends.isEmpty())
     }
+
+    @Test
+    fun writeToCsv() {
+        val classes: Map<Int, List<Student>> = mapOf(
+            (1 to listOf(
+                Student(1, Gender.MALE, Grade.LOW, Grade.MEDIUM, listOf(2), emptyList(), "joe", "school1", "bla"),
+                Student(2, Gender.MALE, Grade.LOW, Grade.MEDIUM, listOf(1), emptyList(), "bill", "school1", "bla")
+            )),
+            (2 to listOf(
+                Student(3, Gender.MALE, Grade.LOW, Grade.MEDIUM, listOf(4), listOf(1), "bob", "school2", "bla bla"),
+                Student(4, Gender.MALE, Grade.LOW, Grade.MEDIUM, listOf(3), emptyList(), "jenny", "school2", "bla")
+            )),
+        )
+        val fileName = "test.csv"
+
+        reader.writeToCsv(fileName, classes)
+
+        val expectedCsv = """
+classroom,name,school,gender,academicPerformance,behavioralPerformance,friend1,friend2,friend3,friend4,notWith,comments
+1,joe,school1,MALE,LOW,MEDIUM,bill,,,,,bla
+1,bill,school1,MALE,LOW,MEDIUM,joe,,,,,bla
+2,bob,school2,MALE,LOW,MEDIUM,jenny,,,,joe,"bla bla"
+2,jenny,school2,MALE,LOW,MEDIUM,bob,,,,,bla""".trimIndent()
+        val fileReader = FileReader(fileName)
+        val bufferedReader = BufferedReader(fileReader)
+        val actualCsv = bufferedReader.readText().trimEnd()
+        assertEquals(expectedCsv, actualCsv)
+
+        File(fileName).delete()
+    }
+
 }

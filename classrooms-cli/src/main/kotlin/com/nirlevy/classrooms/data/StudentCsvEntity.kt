@@ -1,7 +1,4 @@
-package com.nirlevy.classrooms
-
-import com.nirlevy.classrooms.data.Gender
-import com.nirlevy.classrooms.data.Grade
+package com.nirlevy.classrooms.data
 
 data class StudentCsvEntity(
     val name: String,

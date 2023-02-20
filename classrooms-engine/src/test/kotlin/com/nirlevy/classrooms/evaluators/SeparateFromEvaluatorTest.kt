@@ -10,7 +10,7 @@ internal class SeparateFromEvaluatorTest {
     private val evaluator = SeparateFromEvaluator()
 
     @Test
-    internal fun noDisallowedConnections() {
+    fun noDisallowedConnections() {
         val students = listOf(
             Student(1, Gender.MALE, Grade.HIGH, Grade.HIGH, emptyList()),
             Student(2, Gender.MALE, Grade.HIGH, Grade.HIGH, emptyList())
@@ -21,7 +21,7 @@ internal class SeparateFromEvaluatorTest {
     }
 
     @Test
-    internal fun withDisallowedConnection() {
+    fun withDisallowedConnection() {
         val students = listOf(
             Student(1, Gender.MALE, Grade.HIGH, Grade.HIGH, emptyList(), listOf(2)),
             Student(2, Gender.MALE, Grade.HIGH, Grade.HIGH, emptyList())
@@ -32,7 +32,7 @@ internal class SeparateFromEvaluatorTest {
     }
 
     @Test
-    internal fun withOtherDisallowedConnection() {
+    fun withOtherDisallowedConnection() {
         val students = listOf(
             Student(1, Gender.MALE, Grade.HIGH, Grade.HIGH, emptyList(), listOf(5)),
             Student(2, Gender.MALE, Grade.HIGH, Grade.HIGH, emptyList())
@@ -43,7 +43,7 @@ internal class SeparateFromEvaluatorTest {
     }
 
     @Test
-    internal fun withManyDisallowedConnections() {
+    fun withManyDisallowedConnections() {
         val students = listOf(
             Student(1, Gender.MALE, Grade.HIGH, Grade.HIGH, emptyList(), listOf(2)),
             Student(2, Gender.MALE, Grade.HIGH, Grade.HIGH, emptyList()),

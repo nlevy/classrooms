@@ -23,7 +23,7 @@ internal class PopulationGeneratorTest {
     }
 
     @Test
-    internal fun replaceWeakest() {
+    fun replaceWeakest() {
         val c1 = Chromosome(listOf(1), 1.0)
         val c2 = Chromosome(listOf(2), 2.0)
         val c3 = Chromosome(listOf(3), 3.0)
