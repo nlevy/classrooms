@@ -22,7 +22,7 @@ internal class ChromosomeEvaluatorTest {
     }
 
     @Test
-    internal fun evaluate() {
+    fun evaluate() {
         every { evaluator1.evaluate(4,2, listOf(1,2)) } returns 1.0
         every { evaluator2.evaluate(4,2, listOf(1,2)) } returns 2.0
         every { evaluator1.evaluate(4,2, listOf(3,4)) } returns 3.0

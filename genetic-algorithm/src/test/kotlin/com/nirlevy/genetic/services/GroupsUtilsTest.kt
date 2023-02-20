@@ -8,7 +8,7 @@ internal class GroupsUtilsTest {
     private val groupsUtils = GroupsUtils()
 
     @Test
-    internal fun createMap() {
+    fun createMap() {
         val map = groupsUtils.createMap(listOf(1, 2, 3, 2, 2, 1), listOf("a", "b", "c", "d", "e", "f"))
 
         assertEquals(3, map.size)

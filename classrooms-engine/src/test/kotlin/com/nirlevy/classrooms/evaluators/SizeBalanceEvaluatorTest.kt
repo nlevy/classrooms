@@ -12,7 +12,7 @@ internal class SizeBalanceEvaluatorTest {
     private val evaluator = SizeBalanceEvaluator()
 
     @Test
-    internal fun balancedClass() {
+    fun balancedClass() {
         val totalStudents = 4
         val students = buildStudentsList(totalStudents)
 
@@ -21,7 +21,7 @@ internal class SizeBalanceEvaluatorTest {
     }
 
     @Test
-    internal fun imbalancedClass() {
+    fun imbalancedClass() {
         val totalStudents = 3
         val students = buildStudentsList(totalStudents)
 
@@ -30,7 +30,7 @@ internal class SizeBalanceEvaluatorTest {
     }
 
     @Test
-    internal fun withFactor() {
+    fun withFactor() {
         val totalStudents = 4
         val students = buildStudentsList(totalStudents)
 

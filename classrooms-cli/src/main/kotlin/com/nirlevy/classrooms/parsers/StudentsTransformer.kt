@@ -73,7 +73,7 @@ class StudentsTransformer {
         return idsToIdentifiers[id]?.name ?: ""
     }
 
-    fun List<String>.padList(desiredSize: Int): List<String> {
+    private fun List<String>.padList(desiredSize: Int): List<String> {
         if (size >= desiredSize) {
             return this
         }

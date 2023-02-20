@@ -13,7 +13,7 @@ internal class StudentCsvParserTest {
     private val reader = StudentCsvParser(StudentsTransformer())
 
     @Test
-    internal fun parseCsv() {
+    fun parseCsv() {
         val filename = javaClass.classLoader.getResource("testStudents.csv")?.toURI()?.path ?: fail("can't read file")
         val students = reader.parseStudents(filename)
         val byNameMap = students.associateBy { it.name }

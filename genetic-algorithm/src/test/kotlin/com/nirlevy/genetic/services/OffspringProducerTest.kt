@@ -26,7 +26,7 @@ internal class OffspringProducerTest {
     fun setUp() = MockKAnnotations.init(this)
 
     @Test
-    internal fun produceOffspring() {
+    fun produceOffspring() {
         val genes = listOf(1, 2, 3, 4)
         val numGroups = 2
         every { population.selectParents() } returnsMany listOf(listOf(parent1), listOf(parent2))

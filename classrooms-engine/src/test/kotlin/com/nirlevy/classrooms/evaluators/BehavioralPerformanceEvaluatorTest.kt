@@ -12,7 +12,7 @@ internal class BehavioralPerformanceEvaluatorTest {
     private val evaluator = BehavioralPerformanceEvaluator()
 
     @Test
-    internal fun balancedClass() {
+    fun balancedClass() {
         val totalStudents = 3
         val students = buildStudentsList(totalStudents, false)
 
@@ -21,7 +21,7 @@ internal class BehavioralPerformanceEvaluatorTest {
     }
 
     @Test
-    internal fun imbalancedClass() {
+    fun imbalancedClass() {
         val totalStudents = 3
         val students = buildStudentsList(totalStudents, true)
 
@@ -30,7 +30,7 @@ internal class BehavioralPerformanceEvaluatorTest {
     }
 
     @Test
-    internal fun withFactor() {
+    fun withFactor() {
         val totalStudents = 3
         val students = buildStudentsList(totalStudents, true)
 

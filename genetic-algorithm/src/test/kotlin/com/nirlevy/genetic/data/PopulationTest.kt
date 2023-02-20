@@ -7,7 +7,7 @@ import kotlin.test.assertEquals
 internal class PopulationTest {
 
     @Test
-    internal fun selectParents() {
+    fun selectParents() {
         val c1 = Chromosome(listOf(1), 1.0)
         val c2 = Chromosome(listOf(2), 2.0)
         val c3 = Chromosome(listOf(3), 3.0)

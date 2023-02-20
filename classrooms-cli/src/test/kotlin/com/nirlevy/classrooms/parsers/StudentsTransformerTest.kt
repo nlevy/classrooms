@@ -9,7 +9,7 @@ internal class StudentsTransformerTest {
     private val transformer = StudentsTransformer()
 
     @Test
-    internal fun toStudentsList() {
+    fun toStudentsList() {
         val entities = listOf(
             StudentCsvEntity("Bob","school1", Gender.MALE, Grade.LOW, Grade.HIGH,"bla", "jim", "", "", "","",0),
             StudentCsvEntity("jim","school1", Gender.FEMALE, Grade.LOW, Grade.MEDIUM,"bla", "Bob", "", "", "","",1)
@@ -24,7 +24,7 @@ internal class StudentsTransformerTest {
     }
 
     @Test
-    internal fun toStudentsOutputEntities() {
+    fun toStudentsOutputEntities() {
         val classes : Map<Int,List<Student>> = mapOf(
             (1 to listOf(
                 Student(1,  Gender.MALE, Grade.LOW, Grade.MEDIUM, listOf(2), emptyList(),"joe", "school1", "bla"),
