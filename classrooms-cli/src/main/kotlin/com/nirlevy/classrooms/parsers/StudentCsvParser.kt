@@ -3,70 +3,40 @@ package com.nirlevy.classrooms.parsers
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.nirlevy.classrooms.StudentCsvEntity
 import com.nirlevy.classrooms.data.Student
+import com.nirlevy.classrooms.data.StudentCsvEntity
+import com.nirlevy.classrooms.data.StudentOutputCsvEntity
+import java.io.File
 import java.io.FileReader
 
-class StudentCsvParser {
+class StudentCsvParser(private val studentsTransformer: StudentsTransformer) {
 
     private val csvMapper = CsvMapper().apply {
         registerModule(KotlinModule.Builder().build())
     }
+    private val inputSchema = CsvSchema.emptySchema().withHeader()
+    private val outputSchema = csvMapper.schemaFor(StudentOutputCsvEntity::class.java).withHeader()
 
     fun parseStudents(filename: String) : List<Student> {
         FileReader(filename).use { reader ->
             val studentCsvEntities = csvMapper
                 .readerFor(StudentCsvEntity::class.java)
-                .with(CsvSchema.emptySchema().withHeader())
+                .with(inputSchema)
                 .readValues<StudentCsvEntity>(reader)
                 .readAll()
                 .toList()
-            return toStudentsList(studentCsvEntities)
+            return studentsTransformer.toStudentsList(studentCsvEntities)
         }
     }
 
-    private fun toStudentsList(studentCsvEntities: List<StudentCsvEntity>): List<Student> {
-        var i = 1
-        studentCsvEntities.forEach { it.id = i++ }
-        val studentIdentifiersToIds = studentCsvEntities.associateBy({StudentIdentifier(it.name, it.school)}, StudentCsvEntity::id)
-
-        return studentCsvEntities.map {
-            Student(
-                id = it.id,
-                gender = it.gender,
-                academicPerformance = it.academicPerformance,
-                behavioralPerformance = it.behavioralPerformance,
-                name = it.name,
-                school = it.school,
-                comments = it.comments,
-                preferredFriends = friendsToIds(it, studentIdentifiersToIds),
-                cantBeWith = toId(it, studentIdentifiersToIds)
-            )
+    fun writeToCsv(filename: String, classes: Map<Int, List<Student>>) {
+        val students = studentsTransformer.toStudentsOutputEntities(classes).sortedBy { it.classroom }
+        File(filename).bufferedWriter().use { writer ->
+            csvMapper.writer(outputSchema)
+                .writeValues(writer)
+                .writeAll(students)
         }
     }
-
-    private fun toId(it: StudentCsvEntity,
-                     studentIdentifiersToIds: Map<StudentIdentifier, Int>): List<Int> {
-        return if (it.notWith.isEmpty()) {
-            emptyList()
-        } else {
-            listOf(studentIdentifiersToIds.getOrDefault(StudentIdentifier(it.notWith, it.school),0))
-        }
-    }
-
-    private fun friendsToIds(it: StudentCsvEntity, studentIdentifiersToIds: Map<StudentIdentifier, Int>): List<Int> {
-        return listOfNotNull(
-            studentIdentifiersToIds[StudentIdentifier(it.friend1, it.school)],
-            studentIdentifiersToIds[StudentIdentifier(it.friend2, it.school)],
-            studentIdentifiersToIds[StudentIdentifier(it.friend3, it.school)],
-            studentIdentifiersToIds[StudentIdentifier(it.friend4, it.school)]
-        )
-    }
-
-    private data class StudentIdentifier(
-        val name: String,
-        val school: String
-    )
 }
 
 
