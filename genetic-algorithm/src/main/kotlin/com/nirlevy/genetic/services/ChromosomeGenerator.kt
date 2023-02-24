@@ -3,7 +3,7 @@ package com.nirlevy.genetic.services
 import com.nirlevy.genetic.data.Chromosome
 import kotlin.random.Random
 
-class ChromosomeGenerator<T>(private val chromosomeEvaluator: ChromosomeEvaluator<T>) {
+internal class ChromosomeGenerator<T>(private val chromosomeEvaluator: ChromosomeEvaluator<T>) {
 
     fun generateRandomChromosome(genes: List<T>, numGroups: Int): Chromosome {
         val chromosome = mutableListOf<Int>()

@@ -4,7 +4,7 @@ import com.nirlevy.genetic.data.Chromosome
 import com.nirlevy.genetic.data.Population
 import kotlin.random.Random
 
-class OffspringProducer<T>(private val chromosomeEvaluator: ChromosomeEvaluator<T>) {
+internal class OffspringProducer<T>(private val chromosomeEvaluator: ChromosomeEvaluator<T>) {
 
     fun produceOffspring(population: Population<T>): List<Chromosome> {
         val offspring = mutableListOf<Chromosome>()
