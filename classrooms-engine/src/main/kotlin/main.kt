@@ -2,9 +2,7 @@ import com.nirlevy.classrooms.data.Gender
 import com.nirlevy.classrooms.data.Grade
 import com.nirlevy.classrooms.data.Student
 import com.nirlevy.classrooms.evaluators.*
-import com.nirlevy.genetic.GeneticProgramSolver
 import com.nirlevy.genetic.GeneticSolver
-import com.nirlevy.genetic.services.*
 import java.lang.Integer.min
 import java.util.stream.Collectors
 import java.util.stream.IntStream
@@ -24,36 +22,15 @@ fun main() {
         )
     }.collect(Collectors.toList())
 
-    val solver = GeneticProgramSolver(
-        groupEvaluators = listOf(
-            PreferredFriendsEvaluator(),
-            GenderBalanceEvaluator(),
-            SizeBalanceEvaluator(),
-            AcademicPerformanceEvaluator(),
-            BehavioralPerformanceEvaluator(),
-            SeparateFromEvaluator()
-        ), populationSize =  10000
-    )
-//    val solution = solver.solve(students, 6)
-
-    val groupsUtils = GroupsUtils()
-    val chromosomeEvaluator = ChromosomeEvaluator(
-        groupsUtils,
-        PreferredFriendsEvaluator(),
+    val gSolver = GeneticSolver(PreferredFriendsEvaluator(),
         GenderBalanceEvaluator(),
         SizeBalanceEvaluator(),
         AcademicPerformanceEvaluator(),
         BehavioralPerformanceEvaluator(),
-        SeparateFromEvaluator()
-    )
-    val offspringProducer = OffspringProducer(chromosomeEvaluator)
-    val chromosomeGenerator = ChromosomeGenerator(chromosomeEvaluator)
-    val populationGenerator = PopulationGenerator(chromosomeGenerator)
-    val gSolver = GeneticSolver(offspringProducer, populationGenerator, groupsUtils)
+        SeparateFromEvaluator())
 
-    val chromosome = gSolver.runSolver(students, 6)
-    val createMap = createMap(chromosome.genes, students)
-    printSolution(students, createMap)
+    val solution = gSolver.solve(students, 6)
+    printSolution(students, solution)
 }
 
 fun getRandomBlock(id: Int): List<Int> {

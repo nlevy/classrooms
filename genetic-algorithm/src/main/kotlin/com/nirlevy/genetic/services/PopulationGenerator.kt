@@ -4,7 +4,7 @@ import com.nirlevy.genetic.data.Chromosome
 import com.nirlevy.genetic.data.Population
 import kotlin.math.min
 
-class PopulationGenerator<T>(private val chromosomeGenerator: ChromosomeGenerator<T>) {
+internal class PopulationGenerator<T>(private val chromosomeGenerator: ChromosomeGenerator<T>) {
 
     fun generatePopulation(populationSize: Int, genes: List<T>, numGroups: Int) : Population<T> {
         val chromosomes = (1..populationSize).map {
