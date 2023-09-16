@@ -5,11 +5,14 @@ import com.nirlevy.classrooms.model.ClassroomsDto
 import org.springframework.stereotype.Component
 
 @Component
-class ClassroomsTransformer(private val studentTransformer: StudentTransformer) {
+class ClassroomsTransformer(
+    private val studentTransformer: StudentTransformer,
+    private val summaryTransformer: SummaryTransformer
+) {
 
     fun toClassroomsDto(classes: Classrooms): ClassroomsDto {
-        return ClassroomsDto(studentTransformer.toDtoList(classes.classes))
-        // todo add summaries
+        val classesDto = studentTransformer.toDtoList(classes.classes)
+        val summaries = summaryTransformer.toDtoList(classes.classesSummaries)
+        return ClassroomsDto(classesDto, summaries)
     }
-
 }
