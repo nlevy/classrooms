@@ -1,6 +1,6 @@
-package com.nirlevy.classrooms.model
+package com.nirlevy.classrooms.data
 
-data class ClassSummaryDto(
+data class ClassSummary(
     val classNumber: Int,
     val studentsCount: Int,
     val malesCount: Int,

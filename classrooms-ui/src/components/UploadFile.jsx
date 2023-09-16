@@ -61,8 +61,11 @@ const UploadFile = ({ uploadUrl }) => {
             const data = jsonData.classes[index];
             console.log(`Data for index ${index}:`, data);
             const worksheet = XLSX.utils.json_to_sheet(data);
-            XLSX.utils.book_append_sheet(workbook, worksheet, `DataSheet ${index}`);
+            XLSX.utils.book_append_sheet(workbook, worksheet, `Classroom ${index}`);
         });
+        const summary = XLSX.utils.json_to_sheet(jsonData.summaries);
+        XLSX.utils.book_append_sheet(workbook, summary, `Summary`);
+
         const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'buffer' });
         const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
         const url = URL.createObjectURL(blob);
