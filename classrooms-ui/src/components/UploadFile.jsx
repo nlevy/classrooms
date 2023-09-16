@@ -56,6 +56,7 @@ const UploadFile = ({ uploadUrl }) => {
     return (
         <div>
             <h2>Upload Classes Excel File</h2>
+            <div id="selections">
             <div id="fileChooser">
                 <input type="file" accept=".xlsx" onChange={handleFileChange}/>
             </div>
@@ -73,6 +74,7 @@ const UploadFile = ({ uploadUrl }) => {
                 <button onClick={handleUpload} disabled={uploading || !file}>
                     {uploading ? 'Uploading...' : 'Upload'}
                 </button>
+            </div>
             </div>
         </div>
     );
