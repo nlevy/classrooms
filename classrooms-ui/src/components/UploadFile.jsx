@@ -2,13 +2,18 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import * as XLSX from 'xlsx';
 
-const UploadFile = ({uploadUrl}) => {
+const UploadFile = ({ uploadUrl }) => {
     const [file, setFile] = useState(null);
+    const [classesNumber, setClassesNumber] = useState('2');
     const [uploading, setUploading] = useState(false);
 
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
         setFile(selectedFile);
+    };
+
+    const handleValueChange = (event) => {
+        setClassesNumber(event.target.value);
     };
 
     const handleUpload = async () => {
@@ -25,13 +30,16 @@ const UploadFile = ({uploadUrl}) => {
                 const workbook = XLSX.read(data, { type: 'array' });
                 const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
 
-                // Sending JSON data as POST request
-                axios.post(uploadUrl, jsonData)
-                    .then(response => {
+                axios.post(uploadUrl, jsonData, {
+                    params: {
+                        classesNumber: classesNumber,
+                    },
+                })
+                    .then((response) => {
                         console.log('Upload successful:', response);
                         setUploading(false);
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         console.error('Error uploading:', error);
                         setUploading(false);
                     });
@@ -43,13 +51,29 @@ const UploadFile = ({uploadUrl}) => {
         }
     };
 
+    const values = Array.from({ length: 14 }, (_, i) => (i + 2).toString());
+
     return (
         <div>
-            <h2>Upload Excel File</h2>
-            <input type="file" accept=".xlsx" onChange={handleFileChange} />
-            <button onClick={handleUpload} disabled={uploading || !file}>
-                {uploading ? 'Uploading...' : 'Upload'}
-            </button>
+            <h2>Upload Classes Excel File</h2>
+            <div id="fileChooser">
+                <input type="file" accept=".xlsx" onChange={handleFileChange}/>
+            </div>
+            <div id="classesNumber">
+                <label htmlFor="numberOfClasses">Number of Classes:</label>
+                <select id="numberOfClasses" value={classesNumber} onChange={handleValueChange}>
+                    {values.map((value) => (
+                        <option key={value} value={value}>
+                            {value}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div id="uploadButton">
+                <button onClick={handleUpload} disabled={uploading || !file}>
+                    {uploading ? 'Uploading...' : 'Upload'}
+                </button>
+            </div>
         </div>
     );
 };

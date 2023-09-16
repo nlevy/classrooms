@@ -88,7 +88,7 @@ class StudentTransformer {
 
     private fun toId(it: StudentDto,
                      studentIdentifiersToIds: Map<StudentIdentifier, Int>): List<Int> {
-        return if (it.notWith.isEmpty()) {
+        return if (it.notWith?.isEmpty() != false) {
             emptyList()
         } else {
             listOf(studentIdentifiersToIds.getOrDefault(StudentIdentifier(it.notWith, it.school),0))

@@ -14,5 +14,5 @@ data class StudentDto(
     val friend2: String,
     val friend3: String,
     val friend4: String,
-    val notWith: String
+    val notWith: String?
 )

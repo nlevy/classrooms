@@ -11,7 +11,7 @@ class ClassroomsController(private val classroomsService: ClassroomsService) {
 
     @CrossOrigin(origins = ["http://localhost:5173","localhost:5173"])// TODO move to somewhere central, make configurable
     @PostMapping("/classrooms", consumes = ["application/json"], produces = ["application/json"])
-    fun buildClassrooms(@RequestBody students: List<StudentDto>, @RequestParam(defaultValue = "1", required = false) classesNumber: Int) : ResponseEntity<ClassroomsDto> {
+    fun buildClassrooms(@RequestBody students: List<StudentDto>, @RequestParam classesNumber: Int) : ResponseEntity<ClassroomsDto> {
         val classes = classroomsService.buildClasses(students, classesNumber)
         return ResponseEntity.ok()
             .body(classes)
