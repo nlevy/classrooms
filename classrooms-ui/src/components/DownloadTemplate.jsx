@@ -37,7 +37,7 @@ const DownloadTemplate = ({apiUrl}) => {
 
     return (
         <div>
-            <button onClick={handleDownload} disabled={downloading}>
+            <button id="template" onClick={handleDownload} disabled={downloading}>
                 {downloading ? 'Downloading...' : 'Download Template'}
             </button>
         </div>
