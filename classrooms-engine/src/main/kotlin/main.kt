@@ -1,8 +1,7 @@
+import com.nirlevy.classrooms.ClassroomsEngine
 import com.nirlevy.classrooms.data.Gender
 import com.nirlevy.classrooms.data.Grade
 import com.nirlevy.classrooms.data.Student
-import com.nirlevy.classrooms.evaluators.*
-import com.nirlevy.genetic.GeneticSolver
 import java.lang.Integer.min
 import java.util.stream.Collectors
 import java.util.stream.IntStream
@@ -22,15 +21,10 @@ fun main() {
         )
     }.collect(Collectors.toList())
 
-    val gSolver = GeneticSolver(PreferredFriendsEvaluator(),
-        GenderBalanceEvaluator(),
-        SizeBalanceEvaluator(),
-        AcademicPerformanceEvaluator(),
-        BehavioralPerformanceEvaluator(),
-        SeparateFromEvaluator())
+    val classroomsEngine = ClassroomsEngine()
 
-    val solution = gSolver.solve(students, 6)
-    printSolution(students, solution)
+    val solution = classroomsEngine.buildClasses(students, 6)
+    printSolution(students, solution.classes)
 }
 
 fun getRandomBlock(id: Int): List<Int> {
