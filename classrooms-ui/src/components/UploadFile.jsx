@@ -37,6 +37,7 @@ const UploadFile = ({ uploadUrl }) => {
                 })
                     .then((response) => {
                         console.log('Upload successful:', response);
+                        downloadFile(response.data);
                         setUploading(false);
                     })
                     .catch((error) => {
@@ -52,6 +53,26 @@ const UploadFile = ({ uploadUrl }) => {
     };
 
     const values = Array.from({ length: 14 }, (_, i) => (i + 2).toString());
+
+    const downloadFile = (jsonData) => {
+        const workbook = XLSX.utils.book_new();
+
+        Object.keys(jsonData.classes).forEach((index) => {
+            const data = jsonData.classes[index];
+            console.log(`Data for index ${index}:`, data);
+            const worksheet = XLSX.utils.json_to_sheet(data);
+            XLSX.utils.book_append_sheet(workbook, worksheet, `DataSheet ${index}`);
+        });
+        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'buffer' });
+        const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'classrooms.xlsx';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
 
     return (
         <div>
@@ -72,7 +93,7 @@ const UploadFile = ({ uploadUrl }) => {
             </div>
             <div id="uploadButton">
                 <button onClick={handleUpload} disabled={uploading || !file}>
-                    {uploading ? 'Uploading...' : 'Upload'}
+                    {uploading ? 'Building...' : 'Build Classrooms'}
                 </button>
             </div>
             </div>
