@@ -16,6 +16,7 @@ repositories {
 
 dependencies {
     implementation(project(":classrooms-engine"))
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
 
     implementation("org.springframework.boot:spring-boot-starter-web:2.7.6") {
         exclude(group = "org.springframework.boot", module = "spring-boot-starter-tomcat")

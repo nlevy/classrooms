@@ -2,12 +2,16 @@ package com.nirlevy.genetic
 
 import com.nirlevy.genetic.data.Chromosome
 import com.nirlevy.genetic.services.*
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 class GeneticSolver<T>(
     vararg groupEvaluators: GroupEvaluator<T>,
     private val fitnessThreshold: Double = 150.0,
     private val numGenerations: Int = 5000,
     private val populationSize: Int = 10000) {
+
+    private val logger: Logger = LogManager.getLogger(GeneticSolver::class.java)
 
     private val groupsUtils: GroupsUtils = GroupsUtils()
     private val chromosomeEvaluator = ChromosomeEvaluator(groupsUtils, *groupEvaluators)
@@ -30,17 +34,17 @@ class GeneticSolver<T>(
 
             val maxFit = population.chromosomes.max().fitness
             if (maxFit >= fitnessThreshold) {
-                println("Found solution on $generation generation")
+                logger.debug("Found solution on $generation generation")
                 break
             } else {
-                println("Generation $generation max score is $maxFit ($consecutiveEqualBest)")
+                logger.debug("Generation $generation max score is $maxFit ($consecutiveEqualBest)")
                 if (maxFit == previousBest) {
                     if (++consecutiveEqualBest == 10) {
                         if (++shuffleCount == 5) {
-                            println("already shuffled 5 times, stopping...")
+                            logger.debug("already shuffled 5 times, stopping...")
                             break
                         }
-                        println("10 times with same max score $maxFit , shuffling (${shuffleCount} shuffle)")
+                        logger.debug("10 times with same max score $maxFit , shuffling (${shuffleCount} shuffle)")
                         population = populationGenerator.shuffle(population, numGroups)
                         consecutiveEqualBest = 0
                     }
@@ -51,7 +55,7 @@ class GeneticSolver<T>(
             }
         }
         val best = population.chromosomes.max()
-        println("winning group fitness: ${best.fitness}")
+        logger.debug("winning group fitness: ${best.fitness}")
 
         return best
     }

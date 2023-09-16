@@ -1,0 +1,8 @@
+management:
+  endpoints:
+    web:
+      base-path: /manage
+      exposure:
+        include: "*"
+logging:
+  config: classpath:logback-spring.xml
