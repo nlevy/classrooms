@@ -12,12 +12,12 @@ fun main() {
     val students = parser.parseStudents(filename)
 
     val solver = GeneticSolver(
-        PreferredFriendsEvaluator(),
+        listOf(PreferredFriendsEvaluator(),
         GenderBalanceEvaluator(),
         SizeBalanceEvaluator(),
         AcademicPerformanceEvaluator(),
         BehavioralPerformanceEvaluator(),
-        SeparateFromEvaluator()
+        SeparateFromEvaluator()), emptyList()
     )
 
     val solution = solver.solve(students, 6)

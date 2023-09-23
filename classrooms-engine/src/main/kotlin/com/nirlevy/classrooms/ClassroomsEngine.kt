@@ -7,20 +7,23 @@ import com.nirlevy.classrooms.data.Student
 import com.nirlevy.classrooms.evaluators.*
 import com.nirlevy.genetic.GeneticSolver
 import com.nirlevy.genetic.GroupEvaluator
+import com.nirlevy.genetic.MultipleGroupEvaluator
 
 class ClassroomsEngine {
     private val solver: GeneticSolver<Student>
 
     constructor() :
-        this(PreferredFriendsEvaluator(),
+        this(listOf(PreferredFriendsEvaluator(),
             GenderBalanceEvaluator(),
             SizeBalanceEvaluator(),
             AcademicPerformanceEvaluator(),
             BehavioralPerformanceEvaluator(),
-            SeparateFromEvaluator())
+            SeparateFromEvaluator()),
+            emptyList()
+            )
 
-    constructor(vararg groupEvaluators: GroupEvaluator<Student>) {
-        solver = GeneticSolver(*groupEvaluators)
+    constructor(groupEvaluators: List<GroupEvaluator<Student>>, multipleGroupEvaluators: List<MultipleGroupEvaluator<Student>>) {
+        solver = GeneticSolver(groupEvaluators, multipleGroupEvaluators)
     }
 
     fun buildClasses(students: List<Student>, numGroups: Int): Classrooms {
