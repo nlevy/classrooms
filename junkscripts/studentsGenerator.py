@@ -36,6 +36,7 @@ for i in range(240):
     student['friend2'] = ''
     student['friend3'] = ''
     student['friend4'] = ''
+    student['clusterId'] = divmod(i, 5)[0]
     student['notWith'] = ''
     students.append(student)
 
@@ -61,7 +62,7 @@ for i in range(0, len(students)):
 
 # Write the students data to a CSV file
 with open(args.file, 'w', newline='') as file:
-    writer = csv.DictWriter(file, fieldnames=['name', 'school', 'gender', 'academicPerformance', 'behavioralPerformance', 'comments', 'friend1', 'friend2', 'friend3', 'friend4', 'notWith'])
+    writer = csv.DictWriter(file, fieldnames=['name', 'school', 'gender', 'academicPerformance', 'behavioralPerformance', 'comments', 'friend1', 'friend2', 'friend3', 'friend4', 'clusterId', 'notWith'])
     writer.writeheader()
     writer.writerows(students)
 

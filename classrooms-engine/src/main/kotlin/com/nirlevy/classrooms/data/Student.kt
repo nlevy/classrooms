@@ -5,6 +5,7 @@ data class Student(
     val gender: Gender,
     val academicPerformance: Grade,
     val behavioralPerformance: Grade,
+    val clusterId: Int = 0,
     val preferredFriends: List<Int> = emptyList(),
     val cantBeWith: List<Int> = emptyList(),
     val name: String = "",

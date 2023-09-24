@@ -17,11 +17,12 @@ fun main() {
         SizeBalanceEvaluator(),
         AcademicPerformanceEvaluator(),
         BehavioralPerformanceEvaluator(),
-        SeparateFromEvaluator()), emptyList()
+        SeparateFromEvaluator()),
+        listOf(ClustersEvaluator())
     )
 
     val solution = solver.solve(students, 6)
     printSolution(students, solution)
 
-//    parser.writeToCsv("/tmp/testme.csv", solution)
+    parser.writeToCsv("/tmp/testme.csv", solution)
 }

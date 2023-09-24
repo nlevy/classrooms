@@ -45,6 +45,7 @@ internal class GenderBalanceEvaluatorTest {
                 if (balanced) if (it % 2 == 0) Gender.MALE else Gender.FEMALE else if (it % 5 == 0) Gender.MALE else Gender.FEMALE,
                 Grade.HIGH,
                 Grade.HIGH,
+                1,
                 emptyList()
             )
         }.collect(Collectors.toList())
