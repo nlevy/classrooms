@@ -12,22 +12,23 @@ class StudentTransformer {
         val studentDtoWithIds = studentCsvEntities.map { StudentDtoWithId(it, i++) }
         val studentIdentifiersToIds = studentDtoWithIds.associateBy({
             StudentIdentifier(
-                it.studnent.name,
-                it.studnent.school
+                it.student.name,
+                it.student.school
             )
         }, StudentDtoWithId::id)
 
         return studentDtoWithIds.map {
             Student(
                 id = it.id,
-                gender = it.studnent.gender,
-                academicPerformance = it.studnent.academicPerformance,
-                behavioralPerformance = it.studnent.behavioralPerformance,
-                name = it.studnent.name,
-                school = it.studnent.school,
-                comments = it.studnent.comments,
-                preferredFriends = friendsToIds(it.studnent, studentIdentifiersToIds),
-                cantBeWith = toId(it.studnent, studentIdentifiersToIds)
+                gender = it.student.gender,
+                academicPerformance = it.student.academicPerformance,
+                behavioralPerformance = it.student.behavioralPerformance,
+                name = it.student.name,
+                school = it.student.school,
+                comments = it.student.comments,
+                preferredFriends = friendsToIds(it.student, studentIdentifiersToIds),
+                cantBeWith = toId(it.student, studentIdentifiersToIds),
+                clusterId = it.student.clusterId ?: 0
             )
         }
     }
@@ -59,7 +60,8 @@ class StudentTransformer {
                 friends[1],
                 friends[2],
                 friends[3],
-                if (it.cantBeWith.isEmpty()) "" else toName(it.cantBeWith[0], idsToIdentifiers)
+                if (it.cantBeWith.isEmpty()) "" else toName(it.cantBeWith[0], idsToIdentifiers),
+                it.clusterId
             )
         }
     }
@@ -112,7 +114,7 @@ class StudentTransformer {
     )
 
     private data class StudentDtoWithId(
-        val studnent: StudentDto,
+        val student: StudentDto,
         val id: Int
     )
 }
