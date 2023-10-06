@@ -6,7 +6,6 @@ import com.nirlevy.classrooms.model.StudentDto
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -34,7 +33,6 @@ class TemplateController {
         }
     }
 
-    @CrossOrigin(origins = ["http://localhost:5173","localhost:5173"])// TODO move to somewhere central, make configurable
     @GetMapping("/template", produces = ["application/json"])
     fun getTemplate(): ResponseEntity<List<StudentDto>> {
         return ResponseEntity.ok()
