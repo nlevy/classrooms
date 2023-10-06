@@ -6,7 +6,8 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 class GeneticSolver<T>(
-    vararg groupEvaluators: GroupEvaluator<T>,
+    groupEvaluators: List<GroupEvaluator<T>>,
+    multipleGroupEvaluators: List<MultipleGroupEvaluator<T>>,
     private val fitnessThreshold: Double = 150.0,
     private val numGenerations: Int = 5000,
     private val populationSize: Int = 10000) {
@@ -14,7 +15,7 @@ class GeneticSolver<T>(
     private val logger: Logger = LogManager.getLogger(GeneticSolver::class.java)
 
     private val groupsUtils: GroupsUtils = GroupsUtils()
-    private val chromosomeEvaluator = ChromosomeEvaluator(groupsUtils, *groupEvaluators)
+    private val chromosomeEvaluator = ChromosomeEvaluator(groupsUtils, groupEvaluators, multipleGroupEvaluators)
     private val offspringProducer = OffspringProducer(chromosomeEvaluator)
     private val populationGenerator = PopulationGenerator(ChromosomeGenerator(chromosomeEvaluator))
 

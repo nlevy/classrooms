@@ -45,6 +45,7 @@ internal class BehavioralPerformanceEvaluatorTest {
                 Gender.MALE,
                 Grade.HIGH,
                 if (strongClass) if (it == 0) Grade.MEDIUM else Grade.HIGH else Grade.fromValue(it+1),
+                1,
                 emptyList()
             )
         }.collect(Collectors.toList())

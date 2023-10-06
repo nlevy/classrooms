@@ -3,7 +3,7 @@ package com.nirlevy.classrooms.evaluators
 import com.nirlevy.classrooms.data.Gender
 import com.nirlevy.classrooms.data.Grade
 import com.nirlevy.classrooms.data.Student
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.util.stream.Collectors
 import java.util.stream.IntStream
@@ -43,8 +43,9 @@ internal class AcademicPerformanceEvaluatorTest {
             Student(
                 it,
                 Gender.MALE,
-                if (strongClass) if (it == 0) Grade.MEDIUM else Grade.HIGH else Grade.fromValue(it+1),
+                if (strongClass) if (it == 0) Grade.MEDIUM else Grade.HIGH else Grade.fromValue(it + 1),
                 Grade.HIGH,
+                1,
                 emptyList()
             )
         }.collect(Collectors.toList())

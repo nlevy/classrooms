@@ -16,6 +16,7 @@ fun main() {
             gender,
             Grade.fromValue(Random.nextInt(1, 4)),
             Grade.fromValue(Random.nextInt(1, 4)),
+            0,
             getRandomFriends(it, 4),
             if (it % 30 == 0) getRandomBlock(it) else emptyList()
         )

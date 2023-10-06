@@ -40,13 +40,7 @@ internal class SizeBalanceEvaluatorTest {
 
     private fun buildStudentsList(totalStudents: Int): List<Student> {
         val students = IntStream.range(0, totalStudents).boxed().map {
-            Student(
-                it,
-                Gender.MALE,
-                Grade.HIGH,
-                Grade.HIGH,
-                emptyList()
-            )
+            Student(it, Gender.MALE, Grade.HIGH, Grade.HIGH, 1, emptyList())
         }.collect(Collectors.toList())
         return students
     }

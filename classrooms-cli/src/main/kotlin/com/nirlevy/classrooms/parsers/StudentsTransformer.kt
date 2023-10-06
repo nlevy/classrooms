@@ -26,7 +26,8 @@ class StudentsTransformer {
                 school = it.school,
                 comments = it.comments,
                 preferredFriends = friendsToIds(it, studentIdentifiersToIds),
-                cantBeWith = toId(it, studentIdentifiersToIds)
+                cantBeWith = toId(it, studentIdentifiersToIds),
+                clusterId = it.clusterId
             )
         }
     }
@@ -57,7 +58,8 @@ class StudentsTransformer {
                 friends[1],
                 friends[2],
                 friends[3],
-                if (it.cantBeWith.isEmpty()) "" else toName(it.cantBeWith[0], idsToIdentifiers)
+                if (it.cantBeWith.isEmpty()) "" else toName(it.cantBeWith[0], idsToIdentifiers),
+                it.clusterId
             )
         }
     }

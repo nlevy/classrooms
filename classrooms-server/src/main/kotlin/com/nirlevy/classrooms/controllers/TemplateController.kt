@@ -25,7 +25,8 @@ class TemplateController {
             "Second friend name",
             "Third friend name",
             "Fourth friend name",
-            "Student not to be with"
+            "Student not to be with",
+            0
         ))
         private val HEADERS: HttpHeaders = HttpHeaders()
         init {

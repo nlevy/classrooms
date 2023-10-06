@@ -12,5 +12,6 @@ data class StudentCsvEntity(
     val friend3: String,
     val friend4: String,
     val notWith: String,
-    var id: Int
+    var id: Int,
+    val clusterId: Int
 )

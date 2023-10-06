@@ -12,8 +12,8 @@ internal class SeparateFromEvaluatorTest {
     @Test
     fun noDisallowedConnections() {
         val students = listOf(
-            Student(1, Gender.MALE, Grade.HIGH, Grade.HIGH, emptyList()),
-            Student(2, Gender.MALE, Grade.HIGH, Grade.HIGH, emptyList())
+            Student(1, Gender.MALE, Grade.HIGH, Grade.HIGH, 1, emptyList()),
+            Student(2, Gender.MALE, Grade.HIGH, Grade.HIGH, 1, emptyList())
         )
 
         val fitness = evaluator.evaluate(8, 4, students)
@@ -23,8 +23,8 @@ internal class SeparateFromEvaluatorTest {
     @Test
     fun withDisallowedConnection() {
         val students = listOf(
-            Student(1, Gender.MALE, Grade.HIGH, Grade.HIGH, emptyList(), listOf(2)),
-            Student(2, Gender.MALE, Grade.HIGH, Grade.HIGH, emptyList())
+            Student(1, Gender.MALE, Grade.HIGH, Grade.HIGH, 1, emptyList(), listOf(2)),
+            Student(2, Gender.MALE, Grade.HIGH, Grade.HIGH, 1, emptyList())
         )
 
         val fitness = evaluator.evaluate(8, 4, students)
@@ -34,8 +34,8 @@ internal class SeparateFromEvaluatorTest {
     @Test
     fun withOtherDisallowedConnection() {
         val students = listOf(
-            Student(1, Gender.MALE, Grade.HIGH, Grade.HIGH, emptyList(), listOf(5)),
-            Student(2, Gender.MALE, Grade.HIGH, Grade.HIGH, emptyList())
+            Student(1, Gender.MALE, Grade.HIGH, Grade.HIGH, 1, emptyList(), listOf(5)),
+            Student(2, Gender.MALE, Grade.HIGH, Grade.HIGH, 1, emptyList())
         )
 
         val fitness = evaluator.evaluate(8, 4, students)
@@ -45,10 +45,10 @@ internal class SeparateFromEvaluatorTest {
     @Test
     fun withManyDisallowedConnections() {
         val students = listOf(
-            Student(1, Gender.MALE, Grade.HIGH, Grade.HIGH, emptyList(), listOf(2)),
-            Student(2, Gender.MALE, Grade.HIGH, Grade.HIGH, emptyList()),
-            Student(3, Gender.MALE, Grade.HIGH, Grade.HIGH, emptyList()),
-            Student(4, Gender.MALE, Grade.HIGH, Grade.HIGH, emptyList(), listOf(7, 1))
+            Student(1, Gender.MALE, Grade.HIGH, Grade.HIGH, 1, emptyList(), listOf(2)),
+            Student(2, Gender.MALE, Grade.HIGH, Grade.HIGH, 1, emptyList()),
+            Student(3, Gender.MALE, Grade.HIGH, Grade.HIGH, 1, emptyList()),
+            Student(4, Gender.MALE, Grade.HIGH, Grade.HIGH, 1, emptyList(), listOf(7, 1))
         )
 
         val fitness = evaluator.evaluate(8, 4, students)

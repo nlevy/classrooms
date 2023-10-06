@@ -1,6 +1,7 @@
 package com.nirlevy.genetic.services
 
 import com.nirlevy.genetic.GroupEvaluator
+import com.nirlevy.genetic.MultipleGroupEvaluator
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -10,26 +11,28 @@ import kotlin.test.assertEquals
 
 internal class ChromosomeEvaluatorTest {
 
-    @MockK lateinit var evaluator1: GroupEvaluator<Int>
-    @MockK lateinit var evaluator2: GroupEvaluator<Int>
+    @MockK lateinit var evaluator1: GroupEvaluator<Double>
+    @MockK lateinit var evaluator2: GroupEvaluator<Double>
+    @MockK lateinit var multipleGroupEvaluator: MultipleGroupEvaluator<Double>
 
-    lateinit var chromosomeEvaluator: ChromosomeEvaluator<Int>
+    private lateinit var chromosomeEvaluator: ChromosomeEvaluator<Double>
 
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
-        chromosomeEvaluator = ChromosomeEvaluator(GroupsUtils(), evaluator1, evaluator2)
+        chromosomeEvaluator = ChromosomeEvaluator(GroupsUtils(), listOf(evaluator1, evaluator2), listOf(multipleGroupEvaluator))
     }
 
     @Test
     fun evaluate() {
-        every { evaluator1.evaluate(4,2, listOf(1,2)) } returns 1.0
-        every { evaluator2.evaluate(4,2, listOf(1,2)) } returns 2.0
-        every { evaluator1.evaluate(4,2, listOf(3,4)) } returns 3.0
-        every { evaluator2.evaluate(4,2, listOf(3,4)) } returns 4.0
+        every { evaluator1.evaluate(4,2, listOf(1.0,2.0)) } returns 1.0
+        every { evaluator2.evaluate(4,2, listOf(1.0,2.0)) } returns 2.0
+        every { evaluator1.evaluate(4,2, listOf(3.0,4.0)) } returns 3.0
+        every { evaluator2.evaluate(4,2, listOf(3.0,4.0)) } returns 4.0
+        every { multipleGroupEvaluator.evaluate(mapOf(1 to listOf(1.0, 2.0), 2 to listOf(3.0, 4.0))) } returns 5.0
 
-        val fitness = chromosomeEvaluator.evaluateFitness(listOf(1, 1, 2, 2), listOf(1, 2, 3, 4), 2)
+        val fitness = chromosomeEvaluator.evaluateFitness(listOf(1, 1, 2, 2), listOf(1.0, 2.0, 3.0, 4.0), 2)
 
-        assertEquals(10.0/6.0, fitness)
+        assertEquals(15.0/6.0, fitness)
     }
 }
